@@ -7,8 +7,6 @@ $entidades = $EntidadeModel->listaTodasEntidades();
 
 ?>
 
-<link rel="stylesheet" href="https://cdn.datatables.net/1.13.7/css/jquery.dataTables.min.css">
-
 <div class="content-page-container table-page-wide">
     
     <div class="table-header-actions">
@@ -105,24 +103,6 @@ $entidades = $EntidadeModel->listaTodasEntidades();
     </div>
 
 </div>
-
-<script src="https://code.jquery.com/jquery-3.7.1.min.js"></script>
-<script src="https://cdn.datatables.net/1.13.7/js/jquery.dataTables.min.js"></script>
-
-<script>
-$(document).ready(function() {
-    $('#tabela-entidades').DataTable({
-        "language": {
-            "url": "https://cdn.datatables.net/plug-ins/1.13.7/i18n/pt-BR.json"
-        },
-        "pageLength": 10,
-        "order": [[0, "asc"]], // Ordena por padrão pelo nome da entidade (Coluna 0)
-        "columnDefs": [
-            { "orderable": false, "targets": [4, 5] } // Desativa a ordenação nas colunas de Status e Ações
-        ]
-    });
-});
-</script>
 
 <?php
 include 'controladores/footer.php';

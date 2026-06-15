@@ -41,7 +41,7 @@ if (!$LoginModel->validaSessao()) {
                 </a>
                 <ul class="dropdown-menu">
                     <li><a href="cadastros_clientes.php">Clientes</a></li>
-                    <li><a href="fornecedores_cadastro.php">Fornecedores</a></li>
+                    <li><a href="imoveis_listagem.php">Imovéis</a></li>
                     <li><a href="produtos_listagem.php">Produtos</a></li>
                     <li><a href="entidade_listagem.php">Entidades</a></li>
                 </ul>

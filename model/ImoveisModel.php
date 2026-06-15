@@ -22,7 +22,7 @@ class ImoveisModel {
 
         try {
             $stmt = $this->conn->prepare($query);
-            $stmt->bindValue(':nome_locacao', $dados['nome_locacao']);
+            $stmt->bindValue(':nome_locacao', trim($dados['nome_locacao']));
             $stmt->bindValue(':endereco', $dados['endereco']);
             $stmt->bindValue(':entidade', $dados['entidade']);
 
