@@ -47,6 +47,7 @@ class ImoveisModel {
             $stmt->bindValue(':id', $id);
             $stmt->execute();
             return $stmt->fetch(PDO::FETCH_ASSOC);
+            
         } catch (Exception $e) {
             $err = [
                 'data_erro' => date('Y-m-d H:i:s'),
