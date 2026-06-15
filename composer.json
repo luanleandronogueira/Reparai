@@ -1,0 +1,6 @@
+{
+    "require": {
+        "illuminate/cache": "^12.62",
+        "illuminate/filesystem": "^12.62"
+    }
+}
