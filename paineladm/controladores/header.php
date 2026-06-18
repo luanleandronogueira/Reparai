@@ -40,10 +40,11 @@ if (!$LoginModel->validaSessao()) {
                     <svg class="dropdown-caret" width="10" height="6" viewBox="0 0 10 6" fill="none" xmlns="http://www.w3.org/2000/svg"><path d="M1 1L5 5L9 1" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/></svg>
                 </a>
                 <ul class="dropdown-menu">
-                    <li><a href="cadastros_clientes.php">Clientes</a></li>
-                    <li><a href="imoveis_listagem.php">Imovéis</a></li>
-                    <li><a href="produtos_listagem.php">Produtos</a></li>
+                    <li><a href="entidade_listagem.php">Clientes</a></li>
                     <li><a href="entidade_listagem.php">Entidades</a></li>
+                    <li><a href="imoveis_listagem.php">Imovéis</a></li>
+                    <li><a href="servico_tipo.php">Serviços</a></li>
+                    <li><a href="prestador_servico_listagem.php">Prestadores</a></li>
                 </ul>
             </li>
 

@@ -7,3 +7,5 @@ include_once __DIR__ . "/../../model/ImoveisModel.php";
 include_once __DIR__ . "/../../model/RateLimitModel.php";
 include_once __DIR__ . "/../../model/UsuariosModel.php";
 include_once __DIR__ . "/../../model/LoginModel.php";
+include_once __DIR__ . "/../../model/ServicosModel.php";
+include_once __DIR__ . "/../../model/PrestadoresServicosModel.php";
