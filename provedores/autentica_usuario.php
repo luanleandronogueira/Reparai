@@ -56,7 +56,7 @@ if ($usuario_dados) {
         header('Location: ../paineladm/painel.php');
         exit();
     } elseif ($_SESSION['usuario_nivel'] === 'U') {
-        header('Location: ../painel.php');
+        header('Location: ../painelusuario/painel.php');
         exit();
     } else {
         $limiter->hit($key, 60);

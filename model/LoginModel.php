@@ -22,7 +22,7 @@ class LoginModel {
      */
     public function autenticarUsuario($email, $senha)
     {
-        $query = "SELECT id, nome, cpf, email, senha, nivel_acesso, ativo FROM usuarios WHERE email = :email";
+        $query = "SELECT id, nome, cpf, email, senha, nivel_acesso, ativo, entidade_id FROM usuarios WHERE email = :email";
 
         try {
             $stmt = $this->conn->prepare($query);
@@ -71,6 +71,8 @@ class LoginModel {
         $_SESSION['usuario_nome']  = $usuario['nome'];
         $_SESSION['usuario_cpf']   = $usuario['cpf'];
         $_SESSION['usuario_nivel'] = $usuario['nivel_acesso']; // Armazena o nível de acesso (ex: '1', '2')
+        $_SESSION['usuario_entidade'] = $usuario['entidade_id'];
+
         $_SESSION['email']         = $usuario['email'];
         $_SESSION['logado']        = true;
         
