@@ -4,5 +4,16 @@
 
 
 </body>
-
+<script>
+    if ($('#tabela-orcamentos').length) {
+            $('#tabela-orcamentos').DataTable({
+               "language": {
+                  "url": "https://cdn.datatables.net/plug-ins/1.13.7/i18n/pt-BR.json"
+               },
+               "pageLength": 10,
+               "order": [[0, "asc"]],
+               "columnDefs": [{ "orderable": false, "targets": [4, 5] }]
+            });
+         }
+</script>
 </html>

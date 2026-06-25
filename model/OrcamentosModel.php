@@ -3,7 +3,8 @@
 include_once 'ConexaoModel.php';
 include_once 'ErrosModel.php';
 
-class OrcamentosModel {
+class OrcamentosModel
+{
 
     private Conexao $conexao;
     private $conn;
@@ -19,11 +20,12 @@ class OrcamentosModel {
     /**
      * Insere um novo orçamento no banco de dados.
      */
-    public function inserirOrcamento($dados) {
+    public function inserirOrcamento($dados)
+    {
         try {
             $query = "INSERT INTO orcamentos (entidade_id, imovel_id, servicos, observacoes, tipo_urgencia, status_atendimento, solicitante_id, anexo) 
                     VALUES (:entidade_id, :imovel_id, :servicos, :observacoes, :tipo_urgencia, :status_atendimento, :solicitante_id, :anexo)";
-            
+
             $stmt = $this->conn->prepare($query);
 
             $stmt->bindValue(':entidade_id', $dados['entidade_id']);
@@ -36,7 +38,6 @@ class OrcamentosModel {
             $stmt->bindValue(':anexo', $dados['anexo']);
 
             return $stmt->execute();
-            
         } catch (PDOException $e) {
             $err = [
                 'data_erro' => date('Y-m-d H:i:s'),
@@ -48,4 +49,93 @@ class OrcamentosModel {
         }
     }
 
+    public function listaOrcamentos($id_entidade)
+    {
+        try {
+            $query = "SELECT o.id, i.nome_locacao, o.servicos, o.tipo_urgencia, o.status_atendimento FROM orcamentos o JOIN imoveis i ON o.imovel_id = i.id WHERE o.entidade_id = :id_entidade";
+
+            $stmt = $this->conn->prepare($query);
+            $stmt->bindValue(':id_entidade', $id_entidade);
+            $stmt->execute();
+
+            $retorno = $stmt->fetchAll(PDO::FETCH_ASSOC);
+
+            return $retorno;
+
+        } catch (PDOException $e) {
+            $err = [
+                'data_erro' => date('Y-m-d H:i:s'),
+                'descricao' => 'Erro ao executar a função: ' . $e->getMessage(),
+                'funcao' => 'OrcamentosModel - listaOrcamentos'
+            ];
+            $this->erros->insereErro($err);
+            return false;
+        }
+    }
+
+    public function buscaOrcamentoPorId($id)
+    {
+        try {
+            $query = "SELECT o.*, 
+                             i.nome_locacao, 
+                             i.endereco, 
+                             e.entidade_nome,
+                             u.nome as nome_solicitante,
+                             u.email as email_solicitante
+                      FROM orcamentos o
+                      LEFT JOIN imoveis i ON o.imovel_id = i.id
+                      LEFT JOIN entidade e ON o.entidade_id = e.id
+                      LEFT JOIN usuarios u ON o.solicitante_id = u.id
+                      WHERE o.id = :id";
+
+            $stmt = $this->conn->prepare($query);
+            $stmt->bindValue(':id', $id, PDO::PARAM_INT);
+            $stmt->execute();
+
+            return $stmt->fetch(PDO::FETCH_ASSOC);
+
+        } catch (PDOException $e) {
+            $err = [
+                'data_erro' => date('Y-m-d H:i:s'),
+                'descricao' => 'Erro ao buscar orçamento: ' . $e->getMessage(),
+                'funcao' => 'OrcamentosModel - buscaOrcamentoPorId'
+            ];
+            $this->erros->insereErro($err);
+            return false;
+        }
+    }
+
+    public function atualizarAvaliacao($dados)
+    {
+        try {
+            $query = "UPDATE orcamentos SET 
+                        custo = :custo, 
+                        prazo = :prazo, 
+                        observacao_orcamento = :observacao_orcamento, 
+                        status_atendimento = :status_atendimento,
+                        responsavel_id = :responsavel_id,
+                        anexo = :anexo
+                      WHERE id = :id";
+
+            $stmt = $this->conn->prepare($query);
+
+            $stmt->bindValue(':custo', $dados['custo']);
+            $stmt->bindValue(':prazo', $dados['prazo']);
+            $stmt->bindValue(':observacao_orcamento', $dados['observacao_orcamento']);
+            $stmt->bindValue(':status_atendimento', $dados['status_atendimento']);
+            $stmt->bindValue(':responsavel_id', $dados['responsavel_id'], PDO::PARAM_INT);
+            $stmt->bindValue(':anexo', $dados['anexo']);
+            $stmt->bindValue(':id', $dados['id'], PDO::PARAM_INT);
+
+            return $stmt->execute();
+        } catch (PDOException $e) {
+            $err = [
+                'data_erro' => date('Y-m-d H:i:s'),
+                'descricao' => 'Erro ao atualizar avaliação de orçamento: ' . $e->getMessage(),
+                'funcao' => 'OrcamentosModel - atualizarAvaliacao'
+            ];
+            $this->erros->insereErro($err);
+            return false;
+        }
+    }
 }

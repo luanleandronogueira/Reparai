@@ -62,6 +62,26 @@ class EntidadeModel {
         }
     }
 
+    public function buscaNomeEntidadePorId($id)
+    {
+        $query = "SELECT id, entidade_nome FROM entidade WHERE id = :id";
+
+        try {
+            $stmt = $this->conn->prepare($query);
+            $stmt->bindValue(':id', $id);
+            $stmt->execute();
+            return $stmt->fetch(PDO::FETCH_ASSOC);
+        } catch (Exception $e) {
+            $err = [
+                'data_erro' => date('Y-m-d H:i:s'),
+                'descricao' => 'Erro ao executar a função: ' . $e->getMessage(),
+                'funcao' => 'EntidadeModel - buscaNomeEntidadePorId'
+            ];
+            $this->erros->insereErro($err);
+            return false;
+        }
+    }
+
     public function listarEntidades()
     {
         $query = "SELECT id, entidade_nome, cnpj, responsavel, ativo, email, telefone FROM entidade ORDER BY entidade_nome ASC";
