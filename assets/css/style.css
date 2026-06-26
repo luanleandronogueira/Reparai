@@ -187,7 +187,7 @@ body {
 .content-page-container {
     width: 100%;
     max-width: 840px;
-    margin: 120px auto 60px auto;
+    margin: 800px auto 60px auto;
     /* Aumentado para 120px para flutuar perfeitamente abaixo da Navbar fixa com respiro elegante */
     padding: 0 24px;
     box-sizing: border-box;
@@ -198,7 +198,7 @@ body {
 .content-page-container.table-page-wide {
     max-width: 96% !important;
     width: 100% !important;
-    margin: 120px auto 60px auto !important;
+    margin: 40px auto 60px auto !important;
     /* Padronizado com o container regular para manter consistência visual */
     padding: 0 20px !important;
 }

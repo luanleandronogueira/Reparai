@@ -11,7 +11,7 @@
                   "url": "https://cdn.datatables.net/plug-ins/1.13.7/i18n/pt-BR.json"
                },
                "pageLength": 10,
-               "order": [[0, "asc"]],
+               "order": [[0, "desc"]],
                "columnDefs": [{ "orderable": false, "targets": [4, 5] }]
             });
          }

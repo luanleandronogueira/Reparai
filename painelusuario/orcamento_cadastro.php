@@ -11,9 +11,8 @@ $entidade_id = $_SESSION['usuario_entidade'] ?? null;
 
 // Busca imóveis vinculados a esta entidade específica
 $meusImoveis = $ImoveisModel->listarImoveisPorEntidade($entidade_id);
-?>
 
-<div class="content-page-container">
+?>
     <div class="form-card-wrapper">
         <div class="form-card-header">
             <h2 class="form-card-title">Solicitar Orçamento de Serviço</h2>
@@ -72,6 +71,5 @@ $meusImoveis = $ImoveisModel->listarImoveisPorEntidade($entidade_id);
             </div>
         </form>
     </div>
-</div>
 
 <?php include 'controladores/footer.php'; ?>

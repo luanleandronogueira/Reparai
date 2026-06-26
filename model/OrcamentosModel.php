@@ -23,8 +23,8 @@ class OrcamentosModel
     public function inserirOrcamento($dados)
     {
         try {
-            $query = "INSERT INTO orcamentos (entidade_id, imovel_id, servicos, observacoes, tipo_urgencia, status_atendimento, solicitante_id, anexo) 
-                    VALUES (:entidade_id, :imovel_id, :servicos, :observacoes, :tipo_urgencia, :status_atendimento, :solicitante_id, :anexo)";
+            $query = "INSERT INTO orcamentos (entidade_id, imovel_id, servicos, observacoes, tipo_urgencia, status_atendimento, solicitante_id, aprovado, anexo) 
+                    VALUES (:entidade_id, :imovel_id, :servicos, :observacoes, :tipo_urgencia, :status_atendimento, :solicitante_id, :aprovado, :anexo)";
 
             $stmt = $this->conn->prepare($query);
 
@@ -35,6 +35,7 @@ class OrcamentosModel
             $stmt->bindValue(':tipo_urgencia', $dados['tipo_urgencia']);
             $stmt->bindValue(':status_atendimento', 'PENDENTE');
             $stmt->bindValue(':solicitante_id', $dados['solicitante_id']);
+            $stmt->bindValue(':aprovado', $dados['aprovado'] ?? 'A');
             $stmt->bindValue(':anexo', $dados['anexo']);
 
             return $stmt->execute();
@@ -52,7 +53,12 @@ class OrcamentosModel
     public function listaOrcamentos($id_entidade)
     {
         try {
-            $query = "SELECT o.id, i.nome_locacao, o.servicos, o.tipo_urgencia, o.status_atendimento FROM orcamentos o JOIN imoveis i ON o.imovel_id = i.id WHERE o.entidade_id = :id_entidade";
+            $query = "SELECT o.id, i.nome_locacao, 
+                            o.servicos, o.tipo_urgencia, 
+                            o.status_atendimento, o.aprovado 
+                      FROM orcamentos o 
+                      JOIN imoveis i ON o.imovel_id = i.id 
+                      WHERE o.entidade_id = :id_entidade";
 
             $stmt = $this->conn->prepare($query);
             $stmt->bindValue(':id_entidade', $id_entidade);
@@ -61,12 +67,34 @@ class OrcamentosModel
             $retorno = $stmt->fetchAll(PDO::FETCH_ASSOC);
 
             return $retorno;
-
         } catch (PDOException $e) {
             $err = [
                 'data_erro' => date('Y-m-d H:i:s'),
                 'descricao' => 'Erro ao executar a função: ' . $e->getMessage(),
                 'funcao' => 'OrcamentosModel - listaOrcamentos'
+            ];
+            $this->erros->insereErro($err);
+            return false;
+        }
+    }
+
+    public function listaTodosOrcamentos()
+    {
+        try {
+            $query = "SELECT o.id, i.nome_locacao, o.servicos, o.tipo_urgencia, o.status_atendimento FROM orcamentos o JOIN imoveis i ON o.imovel_id = i.id";
+
+            $stmt = $this->conn->prepare($query);
+            // $stmt->bindValue(':id_entidade', $id_entidade);
+            $stmt->execute();
+
+            $retorno = $stmt->fetchAll(PDO::FETCH_ASSOC);
+
+            return $retorno;
+        } catch (PDOException $e) {
+            $err = [
+                'data_erro' => date('Y-m-d H:i:s'),
+                'descricao' => 'Erro ao executar a função: ' . $e->getMessage(),
+                'funcao' => 'OrcamentosModel - listaTodosOrcamentos'
             ];
             $this->erros->insereErro($err);
             return false;
@@ -93,7 +121,6 @@ class OrcamentosModel
             $stmt->execute();
 
             return $stmt->fetch(PDO::FETCH_ASSOC);
-
         } catch (PDOException $e) {
             $err = [
                 'data_erro' => date('Y-m-d H:i:s'),
@@ -133,6 +160,58 @@ class OrcamentosModel
                 'data_erro' => date('Y-m-d H:i:s'),
                 'descricao' => 'Erro ao atualizar avaliação de orçamento: ' . $e->getMessage(),
                 'funcao' => 'OrcamentosModel - atualizarAvaliacao'
+            ];
+            $this->erros->insereErro($err);
+            return false;
+        }
+    }
+
+    public function listaTodosOrcamentosCompleto()
+    {
+        try {
+            $query = "SELECT o.id, 
+                             o.tipo_urgencia, 
+                             o.status_atendimento, 
+                             o.custo, 
+                             o.prazo,
+                             i.nome_locacao, 
+                             e.entidade_nome,
+                             u.nome as nome_solicitante
+                      FROM orcamentos o
+                      LEFT JOIN imoveis i ON o.imovel_id = i.id
+                      LEFT JOIN entidade e ON o.entidade_id = e.id
+                      LEFT JOIN usuarios u ON o.solicitante_id = u.id
+                      ORDER BY o.id DESC";
+
+            $stmt = $this->conn->prepare($query);
+            $stmt->execute();
+            return $stmt->fetchAll(PDO::FETCH_ASSOC);
+        } catch (PDOException $e) {
+            $err = [
+                'data_erro' => date('Y-m-d H:i:s'),
+                'descricao' => 'Erro ao listar orçamentos completos: ' . $e->getMessage(),
+                'funcao' => 'OrcamentosModel - listaTodosOrcamentosCompleto'
+            ];
+            $this->erros->insereErro($err);
+            return [];
+        }
+    }
+
+    public function atualizarApenasAprovacao($id, $aprovacao)
+    {
+        try {
+            $query = "UPDATE orcamentos SET aprovado = :aprovacao WHERE id = :id";
+            
+            $stmt = $this->conn->prepare($query);
+            $stmt->bindValue(':aprovacao', $aprovacao);
+            $stmt->bindValue(':id', $id, PDO::PARAM_INT);
+            
+            return $stmt->execute();
+        } catch (PDOException $e) {
+            $err = [
+                'data_erro' => date('Y-m-d H:i:s'),
+                'descricao' => 'Erro ao atualizar apenas o campo aprovacao: ' . $e->getMessage(),
+                'funcao' => 'OrcamentosModel - atualizarApenasAprovacao'
             ];
             $this->erros->insereErro($err);
             return false;
