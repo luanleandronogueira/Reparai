@@ -174,6 +174,8 @@ class OrcamentosModel
                              o.status_atendimento, 
                              o.custo, 
                              o.prazo,
+                             o.servicos,
+                             o.aprovado,
                              i.nome_locacao, 
                              e.entidade_nome,
                              u.nome as nome_solicitante
