@@ -10,3 +10,4 @@ include_once __DIR__ . "/../../model/LoginModel.php";
 include_once __DIR__ . "/../../model/ServicosModel.php";
 include_once __DIR__ . "/../../model/PrestadoresServicosModel.php";
 include_once __DIR__ . "/../../model/OrcamentosModel.php";
+include_once __DIR__ . "/../../model/PrestacaoServicoModel.php";

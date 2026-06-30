@@ -123,7 +123,7 @@ $orcamentos = $OrcamentosModel->listaTodosOrcamentosCompleto();
                                     </a>
 
                                     <?php if ($statusAprovacao === 'S') { ?>
-                                        <a href="servico_gerar.php?id=<?= $item['id'] ?>" class="action-btn" title="Iniciar Serviço" style="background-color: #2e7d32; color: #fff; margin-left: 4px;">
+                                        <a href="servico_gerar_ordem.php?id=<?= $item['id'] ?>" class="action-btn" title="Iniciar Serviço" style="background-color: #2e7d32; color: #fff; margin-left: 4px;">
                                             <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="2" stroke="currentColor" width="16" height="16">
                                                 <path stroke-linecap="round" stroke-linejoin="round" d="M11.42 15.17L17.25 21A1.5 1.5 0 0019.8 19.8l-5.83-5.83m-2.55 1.2a4.49 4.49 0 01-6.36-6.36m5.1-1.35A4.49 4.49 0 0116.05 6.3M11.42 9.42l4.63-4.63M12 3v1.5M12 19.5V21M3 12h1.5M19.5 12H21m-2.1-6.9l-1.05 1.05M6.6 17.4l-1.05 1.05m0-11.4l1.05 1.05m10.8 10.8l1.05-1.05" />
                                             </svg>
